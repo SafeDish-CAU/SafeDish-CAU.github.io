@@ -2,7 +2,7 @@
 title: Menu Page
 type: docs
 prev: /docs/front/login-page
-# next: /docs/front/menu
+next: /docs/front/menu-register-page.md
 ---
 
 ## 배달앱 연동
@@ -17,3 +17,6 @@ prev: /docs/front/login-page
 ## 관련 API
 - [음식점 UID 조회]({{< relref "/docs/api/#/Diner/getapi_diner" >}})
 - [음식점 메뉴 조회]({{< relref "/docs/api/#/Diner/get_api_diner__diner_id__menu" >}})
+
+## 샘플 이미지
+![menu page sample](/img/menu-page-sample.png)
