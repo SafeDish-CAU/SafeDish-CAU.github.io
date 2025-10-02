@@ -1,13 +1,73 @@
 {
   "openapi": "3.0.0",
   "info": {
-    "title": "Recommendation API",
+    "title": "API Docs",
     "version": "1.0.0",
-    "description": "API 문서: 사용자, 태그, 아이템 CRUD 및 아이템/유저 기반 추천 기능을 제공합니다."
+    "description": "API 문서"
   },
   "paths": {
-    "/diner/{diner_id}/menu": {
+    "api/diner": {
       "get": {
+        "tags": [
+          "Diner"
+        ],
+        "summary": "음식점 UID 조회",
+        "parameters": [
+          {
+            "name": "platform",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "baemin",
+                "yogiyo",
+                "coupang"
+              ]
+            },
+            "description": "조회할 음식점의 UID"
+          },
+          {
+            "name": "pfuid",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "조회할 음식점의 플랫폼 UID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "음식점 UID",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "uid": {
+                      "type": "integer",
+                      "description": "음식점 SafeDish UID"
+                    }
+                  },
+                  "example": {
+                    "uid": 10000
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "해당 음식점이 존재하지 않음"
+          }
+        }
+      }
+    },
+    "/api/diner/{diner_id}/menu": {
+      "get": {
+        "tags": [
+          "Diner"
+        ],
         "summary": "음식점 메뉴 조회",
         "parameters": [
           {
@@ -22,11 +82,46 @@
         ],
         "responses": {
           "200": {
-            "description": "추천된 아이템 ID 리스트",
+            "description": "음식점 메뉴판 정보 조회",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/DinerMenuResponse"
+                  "type": "object",
+                  "properties": {
+                    "diner_name": {
+                      "type": "string",
+                      "description": "매장명",
+                      "example": "맥도날드 중앙대점"
+                    },
+                    "items": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "item_name": {
+                            "type": "string",
+                            "description": "메뉴명",
+                            "example": "빅맥"
+                          },
+                          "allergy_codes": {
+                            "type": "array",
+                            "description": "알레르기 유발 성분 코드",
+                            "items": {
+                              "type": "integer",
+                              "example": [
+                                100, 105, 130
+                              ]
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "latest_update": {
+                      "type": "integer",
+                      "description": "최신 업데이트 시각 (UNIX epoch seconds)",
+                      "example": 1727505600
+                    }
+                  }
                 }
               }
             }
@@ -35,13 +130,6 @@
             "description": "해당 음식점이 존재하지 않음"
           }
         }
-      }
-    }
-  },
-  "components": {
-    "schemas": {
-      "DinerMenuResponse": {
-        "type": "object"
       }
     }
   }

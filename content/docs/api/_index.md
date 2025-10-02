@@ -15,6 +15,7 @@ type: docs
       dom_id: '#swagger-ui',
       deepLinking: true,
       presets: [SwaggerUIBundle.presets.apis],
+      supportedSubmitMethods: [],
       layout: "BaseLayout",
     });
   });
