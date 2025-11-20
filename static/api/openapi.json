@@ -5,131 +5,739 @@
     "version": "1.0.0",
     "description": "API 문서"
   },
+  "servers": [
+    {
+      "url": "http://localhost:8080"
+    }
+  ],
   "paths": {
-    "api/diner": {
-      "get": {
+    "/api/owner": {
+      "post": {
+        "summary": "Create owner (sign up)",
+        "operationId": "createOwner",
         "tags": [
-          "Diner"
+          "Owner"
         ],
-        "summary": "음식점 UID 조회",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateOwnerRequestDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Owner created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreateOwnerResponseDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Email already in use",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/auth/login": {
+      "post": {
+        "summary": "Login owner",
+        "operationId": "loginOwner",
+        "tags": [
+          "Auth"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginOwnerRequestDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Login success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LoginOwnerResponseDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Email or password not found / mismatch",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/store": {
+      "post": {
+        "summary": "Create store",
+        "operationId": "createStore",
+        "tags": [
+          "Store"
+        ],
         "parameters": [
           {
-            "name": "platform",
-            "in": "query",
+            "name": "Authorization",
+            "in": "header",
+            "required": true,
+            "description": "access token. Format: `{token}`",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateStoreRequestDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Store created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreateStoreResponseDto"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized (invalid token)"
+          }
+        }
+      }
+    },
+    "/api/store/{storeId}": {
+      "get": {
+        "summary": "Get store detail",
+        "operationId": "readStore",
+        "tags": [
+          "Store"
+        ],
+        "parameters": [
+          {
+            "name": "storeId",
+            "in": "path",
             "required": true,
             "schema": {
-              "type": "string",
-              "enum": [
-                "baemin",
-                "yogiyo",
-                "coupang"
-              ]
-            },
-            "description": "조회할 음식점의 UID"
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Store detail",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReadStoreResponseDto"
+                }
+              }
+            }
           },
+          "404": {
+            "description": "Store not found"
+          }
+        }
+      }
+    },
+    "/api/menu": {
+      "post": {
+        "summary": "Create menu",
+        "operationId": "createMenu",
+        "tags": [
+          "Menu"
+        ],
+        "parameters": [
           {
-            "name": "pfuid",
+            "name": "Authorization",
+            "in": "header",
+            "required": true,
+            "description": "access token. Format: `{token}`",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateMenuRequestDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Menu created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreateMenuResponseDto"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized (invalid token)"
+          }
+        }
+      }
+    },
+    "/api/menu/{menuId}": {
+      "get": {
+        "summary": "Get menu detail",
+        "operationId": "readMenu",
+        "tags": [
+          "Menu"
+        ],
+        "parameters": [
+          {
+            "name": "menuId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Menu detail",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReadMenuResponseDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Menu not found"
+          }
+        }
+      }
+    },
+    "/api/option": {
+      "post": {
+        "summary": "Create option",
+        "operationId": "createOption",
+        "tags": [
+          "Option"
+        ],
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": true,
+            "description": "access token. Format: `{token}`",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateOptionRequestDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Option created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreateOptionResponseDto"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized (invalid token)"
+          }
+        }
+      }
+    },
+    "/api/option/{optionId}": {
+      "get": {
+        "summary": "Get option detail",
+        "operationId": "readOption",
+        "tags": [
+          "Option"
+        ],
+        "parameters": [
+          {
+            "name": "optionId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Option detail",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReadOptionResponseDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Option not found"
+          }
+        }
+      }
+    },
+    "/api/platform": {
+      "get": {
+        "summary": "Find store by platform info",
+        "operationId": "readPlatform",
+        "tags": [
+          "Platform"
+        ],
+        "parameters": [
+          {
+            "name": "pf_name",
             "in": "query",
             "required": true,
             "schema": {
               "type": "string"
             },
-            "description": "조회할 음식점의 플랫폼 UID"
+            "description": "Platform name (e.g. baemin, coupang)"
+          },
+          {
+            "name": "pf_sid",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            },
+            "description": "Platform store id"
           }
         ],
         "responses": {
           "200": {
-            "description": "음식점 UID",
+            "description": "Found store id for given platform",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "uid": {
-                      "type": "integer",
-                      "description": "음식점 SafeDish UID"
-                    }
-                  },
-                  "example": {
-                    "uid": 10000
-                  }
+                  "$ref": "#/components/schemas/ReadPlatformResponseDto"
                 }
               }
             }
           },
           "404": {
-            "description": "해당 음식점이 존재하지 않음"
+            "description": "Store not found for given platform",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Link store with external platform",
+        "operationId": "createPlatform",
+        "tags": [
+          "Platform"
+        ],
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": true,
+            "description": "access token. Format: `{token}`",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreatePlatformRequestDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Platform link created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreatePlatformResponseDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid platform name"
+          },
+          "401": {
+            "description": "Unauthorized (invalid token)"
           }
         }
       }
-    },
-    "/api/diner/{diner_id}/menu": {
-      "get": {
-        "tags": [
-          "Diner"
-        ],
-        "summary": "음식점 메뉴 조회",
-        "parameters": [
-          {
-            "name": "diner_id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer"
-            },
-            "description": "조회할 음식점의 UID"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "음식점 메뉴판 정보 조회",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "diner_name": {
-                      "type": "string",
-                      "description": "매장명",
-                      "example": "맥도날드 중앙대점"
-                    },
-                    "items": {
-                      "type": "array",
-                      "items": {
-                        "type": "object",
-                        "properties": {
-                          "item_name": {
-                            "type": "string",
-                            "description": "메뉴명",
-                            "example": "빅맥"
-                          },
-                          "allergy_codes": {
-                            "type": "array",
-                            "description": "알레르기 유발 성분 코드",
-                            "items": {
-                              "type": "integer",
-                              "example": [
-                                100, 105, 130
-                              ]
-                            }
-                          }
-                        }
-                      }
-                    },
-                    "latest_update": {
-                      "type": "integer",
-                      "description": "최신 업데이트 시각 (UNIX epoch seconds)",
-                      "example": 1727505600
-                    }
-                  }
-                }
-              }
-            }
+    }
+  },
+  "components": {
+    "schemas": {
+      "AllergyDto": {
+        "type": "object",
+        "properties": {
+          "allergy_code": {
+            "type": "integer",
+            "format": "int64"
           },
-          "404": {
-            "description": "해당 음식점이 존재하지 않음"
+          "allergy_description": {
+            "type": "string"
           }
         }
+      },
+      "CreateMenuRequestDto": {
+        "type": "object",
+        "properties": {
+          "store_id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "menu_name": {
+            "type": "string"
+          },
+          "menu_price": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "menu_allergies": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        }
+      },
+      "CreateMenuResponseDto": {
+        "type": "object",
+        "properties": {
+          "store_id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "menu_id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "menu_name": {
+            "type": "string"
+          },
+          "menu_price": {
+            "type": "integer",
+            "format": "int64"
+          }
+        }
+      },
+      "CreateOptionRequestDto": {
+        "type": "object",
+        "properties": {
+          "menu_id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "option_name": {
+            "type": "string"
+          },
+          "option_price": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "option_allergies": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        }
+      },
+      "CreateOptionResponseDto": {
+        "type": "object",
+        "properties": {
+          "menu_id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "option_id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "option_name": {
+            "type": "string"
+          },
+          "option_price": {
+            "type": "integer",
+            "format": "int64"
+          }
+        }
+      },
+      "CreateOwnerRequestDto": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          }
+        }
+      },
+      "CreateOwnerResponseDto": {
+        "type": "object",
+        "properties": {
+          "owner_id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "token": {
+            "type": "string"
+          }
+        }
+      },
+      "CreatePlatformRequestDto": {
+        "type": "object",
+        "properties": {
+          "store_id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "pf_name": {
+            "type": "string"
+          },
+          "pf_sid": {
+            "type": "integer",
+            "format": "int64"
+          }
+        }
+      },
+      "CreatePlatformResponseDto": {
+        "type": "object",
+        "properties": {
+          "store_id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "pf_name": {
+            "type": "string"
+          },
+          "pf_sid": {
+            "type": "integer",
+            "format": "int64"
+          }
+        }
+      },
+      "CreateStoreRequestDto": {
+        "type": "object",
+        "properties": {
+          "store_name": {
+            "type": "string"
+          }
+        }
+      },
+      "CreateStoreResponseDto": {
+        "type": "object",
+        "properties": {
+          "store_id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "store_name": {
+            "type": "string"
+          }
+        }
+      },
+      "LoginOwnerRequestDto": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          }
+        }
+      },
+      "LoginOwnerResponseDto": {
+        "type": "object",
+        "properties": {
+          "owner_id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "token": {
+            "type": "string"
+          }
+        }
+      },
+      "MenuDto": {
+        "type": "object",
+        "properties": {
+          "menu_id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "menu_name": {
+            "type": "string"
+          },
+          "menu_price": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "menu_allergies": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AllergyDto"
+            }
+          },
+          "menu_options": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/OptionDto"
+            }
+          }
+        }
+      },
+      "OptionDto": {
+        "type": "object",
+        "properties": {
+          "option_id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "option_name": {
+            "type": "string"
+          },
+          "option_price": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "option_allergies": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AllergyDto"
+            }
+          }
+        }
+      },
+      "OwnerRequestDto": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          }
+        }
+      },
+      "ReadPlatformResponseDto": {
+        "type": "object",
+        "properties": {
+          "store_id": {
+            "type": "integer",
+            "format": "int64"
+          }
+        }
+      },
+      "StoreDto": {
+        "type": "object",
+        "properties": {
+          "store_id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "store_name": {
+            "type": "string"
+          },
+          "menus": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MenuDto"
+            }
+          }
+        }
+      },
+      "ReadStoreResponseDto": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/StoreDto"
+          }
+        ]
+      },
+      "ReadMenuResponseDto": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/MenuDto"
+          }
+        ]
+      },
+      "ReadOptionResponseDto": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/OptionDto"
+          }
+        ]
       }
     }
   }
