@@ -430,6 +430,297 @@
           }
         }
       }
+    },
+    "/api/store/{storeId}/edit": {
+      "post": {
+        "summary": "Edit store",
+        "operationId": "editStore",
+        "tags": [
+          "Store"
+        ],
+        "parameters": [
+          {
+            "name": "storeId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": true,
+            "description": "access token. Format: `{token}`",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EditStoreRequestDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Store updated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EditStoreResponseDto"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized (invalid token)"
+          },
+          "404": {
+            "description": "Store not found"
+          }
+        }
+      }
+    },
+    "/api/store/{storeId}/delete": {
+      "post": {
+        "summary": "Delete store",
+        "operationId": "deleteStore",
+        "tags": [
+          "Store"
+        ],
+        "parameters": [
+          {
+            "name": "storeId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": true,
+            "description": "access token. Format: `{token}`",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Store deleted"
+          },
+          "401": {
+            "description": "Unauthorized (invalid token)"
+          },
+          "404": {
+            "description": "Store not found"
+          }
+        }
+      }
+    },
+    "/api/menu/{menuId}/edit": {
+      "post": {
+        "summary": "Edit menu",
+        "operationId": "editMenu",
+        "tags": [
+          "Menu"
+        ],
+        "parameters": [
+          {
+            "name": "menuId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": true,
+            "description": "access token. Format: `{token}`",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EditMenuRequestDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Menu updated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EditMenuResponseDto"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized (invalid token)"
+          },
+          "404": {
+            "description": "Menu not found"
+          }
+        }
+      }
+    },
+    "/api/menu/{menuId}/delete": {
+      "post": {
+        "summary": "Delete menu",
+        "operationId": "deleteMenu",
+        "tags": [
+          "Menu"
+        ],
+        "parameters": [
+          {
+            "name": "menuId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": true,
+            "description": "access token. Format: `{token}`",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Menu deleted"
+          },
+          "401": {
+            "description": "Unauthorized (invalid token)"
+          },
+          "404": {
+            "description": "Menu not found"
+          }
+        }
+      }
+    },
+    "/api/option/{optionId}/edit": {
+      "post": {
+        "summary": "Edit option",
+        "operationId": "editOption",
+        "tags": [
+          "Option"
+        ],
+        "parameters": [
+          {
+            "name": "optionId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": true,
+            "description": "access token. Format: `{token}`",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EditOptionRequestDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Option updated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EditOptionResponseDto"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized (invalid token)"
+          },
+          "404": {
+            "description": "Option not found"
+          }
+        }
+      }
+    },
+    "/api/option/{optionId}/delete": {
+      "post": {
+        "summary": "Delete option",
+        "operationId": "deleteOption",
+        "tags": [
+          "Option"
+        ],
+        "parameters": [
+          {
+            "name": "optionId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": true,
+            "description": "access token. Format: `{token}`",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Option deleted"
+          },
+          "401": {
+            "description": "Unauthorized (invalid token)"
+          },
+          "404": {
+            "description": "Option not found"
+          }
+        }
+      }
     }
   },
   "components": {
@@ -738,6 +1029,96 @@
             "$ref": "#/components/schemas/OptionDto"
           }
         ]
+      },
+      "EditStoreRequestDto": {
+        "type": "object",
+        "properties": {
+          "store_name": {
+            "type": "string"
+          }
+        }
+      },
+      "EditStoreResponseDto": {
+        "type": "object",
+        "properties": {
+          "store_id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "store_name": {
+            "type": "string"
+          }
+        }
+      },
+      "EditMenuRequestDto": {
+        "type": "object",
+        "properties": {
+          "menu_name": {
+            "type": "string"
+          },
+          "menu_price": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "menu_allergies": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        }
+      },
+      "EditMenuResponseDto": {
+        "type": "object",
+        "properties": {
+          "menu_id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "menu_name": {
+            "type": "string"
+          },
+          "menu_price": {
+            "type": "integer",
+            "format": "int64"
+          }
+        }
+      },
+      "EditOptionRequestDto": {
+        "type": "object",
+        "properties": {
+          "option_name": {
+            "type": "string"
+          },
+          "option_price": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "option_allergies": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        }
+      },
+      "EditOptionResponseDto": {
+        "type": "object",
+        "properties": {
+          "option_id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "option_name": {
+            "type": "string"
+          },
+          "option_price": {
+            "type": "integer",
+            "format": "int64"
+          }
+        }
       }
     }
   }
