@@ -134,6 +134,16 @@
           },
           "401": {
             "description": "Unauthorized (invalid token)"
+          },
+          "404": {
+            "description": "Invalid road address",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
           }
         }
       }
@@ -169,264 +179,6 @@
           },
           "404": {
             "description": "Store not found"
-          }
-        }
-      }
-    },
-    "/api/menu": {
-      "post": {
-        "summary": "Create menu",
-        "operationId": "createMenu",
-        "tags": [
-          "Menu"
-        ],
-        "parameters": [
-          {
-            "name": "Authorization",
-            "in": "header",
-            "required": true,
-            "description": "access token. Format: `{token}`",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CreateMenuRequestDto"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Menu created",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/CreateMenuResponseDto"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized (invalid token)"
-          }
-        }
-      }
-    },
-    "/api/menu/{menuId}": {
-      "get": {
-        "summary": "Get menu detail",
-        "operationId": "readMenu",
-        "tags": [
-          "Menu"
-        ],
-        "parameters": [
-          {
-            "name": "menuId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int64"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Menu detail",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ReadMenuResponseDto"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Menu not found"
-          }
-        }
-      }
-    },
-    "/api/option": {
-      "post": {
-        "summary": "Create option",
-        "operationId": "createOption",
-        "tags": [
-          "Option"
-        ],
-        "parameters": [
-          {
-            "name": "Authorization",
-            "in": "header",
-            "required": true,
-            "description": "access token. Format: `{token}`",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CreateOptionRequestDto"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Option created",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/CreateOptionResponseDto"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized (invalid token)"
-          }
-        }
-      }
-    },
-    "/api/option/{optionId}": {
-      "get": {
-        "summary": "Get option detail",
-        "operationId": "readOption",
-        "tags": [
-          "Option"
-        ],
-        "parameters": [
-          {
-            "name": "optionId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int64"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Option detail",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ReadOptionResponseDto"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Option not found"
-          }
-        }
-      }
-    },
-    "/api/platform": {
-      "get": {
-        "summary": "Find store by platform info",
-        "operationId": "readPlatform",
-        "tags": [
-          "Platform"
-        ],
-        "parameters": [
-          {
-            "name": "pf_name",
-            "in": "query",
-            "required": true,
-            "schema": {
-              "type": "string"
-            },
-            "description": "Platform name (e.g. baemin, coupang)"
-          },
-          {
-            "name": "pf_sid",
-            "in": "query",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int64"
-            },
-            "description": "Platform store id"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Found store id for given platform",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ReadPlatformResponseDto"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Store not found for given platform",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        }
-      },
-      "post": {
-        "summary": "Link store with external platform",
-        "operationId": "createPlatform",
-        "tags": [
-          "Platform"
-        ],
-        "parameters": [
-          {
-            "name": "Authorization",
-            "in": "header",
-            "required": true,
-            "description": "access token. Format: `{token}`",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CreatePlatformRequestDto"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Platform link created",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/CreatePlatformResponseDto"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid platform name"
-          },
-          "401": {
-            "description": "Unauthorized (invalid token)"
           }
         }
       }
@@ -528,6 +280,150 @@
         }
       }
     },
+    "/api/store/{storeId}/address": {
+      "post": {
+        "summary": "Edit store address",
+        "operationId": "editStoreAddress",
+        "tags": [
+          "Store"
+        ],
+        "parameters": [
+          {
+            "name": "storeId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": true,
+            "description": "access token. Format: `{token}`",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EditStoreAddressRequestDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Store address updated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EditStoreAddressResponseDto"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized (invalid token)"
+          },
+          "404": {
+            "description": "Invalid road address",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/menu": {
+      "post": {
+        "summary": "Create menu",
+        "operationId": "createMenu",
+        "tags": [
+          "Menu"
+        ],
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": true,
+            "description": "access token. Format: `{token}`",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateMenuRequestDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Menu created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreateMenuResponseDto"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized (invalid token)"
+          }
+        }
+      }
+    },
+    "/api/menu/{menuId}": {
+      "get": {
+        "summary": "Get menu detail",
+        "operationId": "readMenu",
+        "tags": [
+          "Menu"
+        ],
+        "parameters": [
+          {
+            "name": "menuId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Menu detail",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReadMenuResponseDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Menu not found"
+          }
+        }
+      }
+    },
     "/api/menu/{menuId}/edit": {
       "post": {
         "summary": "Edit menu",
@@ -625,6 +521,86 @@
         }
       }
     },
+    "/api/option": {
+      "post": {
+        "summary": "Create option",
+        "operationId": "createOption",
+        "tags": [
+          "Option"
+        ],
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": true,
+            "description": "access token. Format: `{token}`",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateOptionRequestDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Option created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreateOptionResponseDto"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized (invalid token)"
+          }
+        }
+      }
+    },
+    "/api/option/{optionId}": {
+      "get": {
+        "summary": "Get option detail",
+        "operationId": "readOption",
+        "tags": [
+          "Option"
+        ],
+        "parameters": [
+          {
+            "name": "optionId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Option detail",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReadOptionResponseDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Option not found"
+          }
+        }
+      }
+    },
     "/api/option/{optionId}/edit": {
       "post": {
         "summary": "Edit option",
@@ -718,6 +694,104 @@
           },
           "404": {
             "description": "Option not found"
+          }
+        }
+      }
+    },
+    "/api/platform": {
+      "get": {
+        "summary": "Find store by platform info",
+        "operationId": "readPlatform",
+        "tags": [
+          "Platform"
+        ],
+        "parameters": [
+          {
+            "name": "pf_name",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Platform name (e.g. baemin, coupang)"
+          },
+          {
+            "name": "pf_sid",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            },
+            "description": "Platform store id"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Found store id for given platform",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReadPlatformResponseDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Store not found for given platform",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Link store with external platform",
+        "operationId": "createPlatform",
+        "tags": [
+          "Platform"
+        ],
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": true,
+            "description": "access token. Format: `{token}`",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreatePlatformRequestDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Platform link created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreatePlatformResponseDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid platform name"
+          },
+          "401": {
+            "description": "Unauthorized (invalid token)"
           }
         }
       }
@@ -882,6 +956,15 @@
         "type": "object",
         "properties": {
           "store_name": {
+            "type": "string"
+          },
+          "store_road_address": {
+            "type": "string"
+          },
+          "store_postal_code": {
+            "type": "string"
+          },
+          "store_detail_address": {
             "type": "string"
           }
         }
@@ -1117,6 +1200,38 @@
           "option_price": {
             "type": "integer",
             "format": "int64"
+          }
+        }
+      },
+      "EditStoreAddressRequestDto": {
+        "type": "object",
+        "properties": {
+          "store_road_address": {
+            "type": "string"
+          },
+          "store_postal_code": {
+            "type": "string"
+          },
+          "store_detail_address": {
+            "type": "string"
+          }
+        }
+      },
+      "EditStoreAddressResponseDto": {
+        "type": "object",
+        "properties": {
+          "store_id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "store_road_address": {
+            "type": "string"
+          },
+          "store_postal_code": {
+            "type": "string"
+          },
+          "store_detail_address": {
+            "type": "string"
           }
         }
       }
