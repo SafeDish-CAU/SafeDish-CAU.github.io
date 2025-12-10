@@ -1,710 +1,346 @@
 {
-  "openapi": "3.0.0",
+  "openapi": "3.0.1",
   "info": {
-    "title": "API Docs",
-    "version": "1.0.0",
-    "description": "API 문서"
+    "title": "SafeDish Backend API",
+    "version": "1.0.0"
   },
   "servers": [
     {
-      "url": "http://{url}:15557"
+      "url": "/",
+      "description": "Default server"
     }
   ],
   "paths": {
-    "/api/owner": {
+    "/api/auth/login": {
       "post": {
-        "summary": "Create owner (sign up)",
-        "operationId": "createOwner",
-        "tags": [
-          "Owner"
-        ],
+        "summary": "Owner 로그인",
+        "operationId": "loginOwner",
         "requestBody": {
           "required": true,
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/CreateOwnerRequestDto"
+                "$ref": "#/components/schemas/LoginOwnerRequest"
               }
             }
           }
         },
         "responses": {
           "200": {
-            "description": "Owner created",
+            "description": "로그인 성공",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/CreateOwnerResponseDto"
+                  "$ref": "#/components/schemas/LoginOwnerResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "이메일 또는 비밀번호 불일치"
+          }
+        }
+      }
+    },
+
+    "/api/owner": {
+      "post": {
+        "summary": "Owner 회원가입",
+        "operationId": "createOwner",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateOwnerRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "회원가입 성공",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreateOwnerResponse"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "이미 존재하는 이메일 등"
+          }
+        }
+      }
+    },
+
+    "/api/store": {
+      "post": {
+        "summary": "가게 생성",
+        "operationId": "createStore",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateStoreRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "가게 생성 성공",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreateStoreResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "토큰 인증 실패"
+          }
+        }
+      }
+    },
+
+    "/api/store/{storeId}": {
+      "get": {
+        "summary": "가게 상세 조회",
+        "operationId": "readStore",
+        "parameters": [
+          {
+            "name": "storeId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "가게 상세 정보",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Store"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "존재하지 않는 가게"
+          }
+        }
+      }
+    },
+
+    "/api/menu": {
+      "post": {
+        "summary": "메뉴 생성",
+        "operationId": "createMenu",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateMenuRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "메뉴 생성 성공",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreateMenuResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "토큰 인증 실패"
+          }
+        }
+      }
+    },
+
+    "/api/menu/{menuId}": {
+      "get": {
+        "summary": "메뉴 상세 조회",
+        "operationId": "readMenu",
+        "parameters": [
+          {
+            "name": "menuId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "메뉴 상세 정보",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Menu"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "존재하지 않는 메뉴"
+          }
+        }
+      }
+    },
+
+    "/api/option": {
+      "post": {
+        "summary": "옵션 그룹 생성",
+        "operationId": "createOptionGroup",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateOptionGroupRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "옵션 그룹 생성 성공",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreateOptionGroupResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "토큰 인증 실패"
+          }
+        }
+      }
+    },
+
+    "/api/option/{groupId}/item": {
+      "post": {
+        "summary": "옵션 아이템 생성",
+        "operationId": "createOptionItem",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "groupId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateOptionItemRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "옵션 아이템 생성 성공",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreateOptionItemResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "토큰 인증 실패"
+          }
+        }
+      }
+    },
+
+    "/api/platform": {
+      "post": {
+        "summary": "플랫폼 매핑 생성 (배민/쿠팡 등)",
+        "operationId": "createPlatform",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreatePlatformRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "플랫폼 매핑 생성 성공",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreatePlatformResponse"
                 }
               }
             }
           },
           "400": {
-            "description": "Email already in use",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/auth/login": {
-      "post": {
-        "summary": "Login owner",
-        "operationId": "loginOwner",
-        "tags": [
-          "Auth"
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/LoginOwnerRequestDto"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Login success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/LoginOwnerResponseDto"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Email or password not found / mismatch",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/store": {
-      "post": {
-        "summary": "Create store",
-        "operationId": "createStore",
-        "tags": [
-          "Store"
-        ],
-        "parameters": [
-          {
-            "name": "Authorization",
-            "in": "header",
-            "required": true,
-            "description": "access token. Format: `{token}`",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CreateStoreRequestDto"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Store created",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/CreateStoreResponseDto"
-                }
-              }
-            }
+            "description": "지원하지 않는 플랫폼명"
           },
           "401": {
-            "description": "Unauthorized (invalid token)"
-          },
-          "404": {
-            "description": "Invalid road address",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
+            "description": "토큰 인증 실패"
           }
         }
-      }
-    },
-    "/api/store/{storeId}": {
+      },
       "get": {
-        "summary": "Get store detail",
-        "operationId": "readStore",
-        "tags": [
-          "Store"
-        ],
-        "parameters": [
-          {
-            "name": "storeId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int64"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Store detail",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ReadStoreResponseDto"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Store not found"
-          }
-        }
-      }
-    },
-    "/api/store/{storeId}/edit": {
-      "post": {
-        "summary": "Edit store",
-        "operationId": "editStore",
-        "tags": [
-          "Store"
-        ],
-        "parameters": [
-          {
-            "name": "storeId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int64"
-            }
-          },
-          {
-            "name": "Authorization",
-            "in": "header",
-            "required": true,
-            "description": "access token. Format: `{token}`",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/EditStoreRequestDto"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Store updated",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/EditStoreResponseDto"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized (invalid token)"
-          },
-          "404": {
-            "description": "Store not found"
-          }
-        }
-      }
-    },
-    "/api/store/{storeId}/delete": {
-      "post": {
-        "summary": "Delete store",
-        "operationId": "deleteStore",
-        "tags": [
-          "Store"
-        ],
-        "parameters": [
-          {
-            "name": "storeId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int64"
-            }
-          },
-          {
-            "name": "Authorization",
-            "in": "header",
-            "required": true,
-            "description": "access token. Format: `{token}`",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Store deleted"
-          },
-          "401": {
-            "description": "Unauthorized (invalid token)"
-          },
-          "404": {
-            "description": "Store not found"
-          }
-        }
-      }
-    },
-    "/api/store/{storeId}/address": {
-      "post": {
-        "summary": "Edit store address",
-        "operationId": "editStoreAddress",
-        "tags": [
-          "Store"
-        ],
-        "parameters": [
-          {
-            "name": "storeId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int64"
-            }
-          },
-          {
-            "name": "Authorization",
-            "in": "header",
-            "required": true,
-            "description": "access token. Format: `{token}`",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/EditStoreAddressRequestDto"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Store address updated",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/EditStoreAddressResponseDto"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized (invalid token)"
-          },
-          "404": {
-            "description": "Invalid road address",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/menu": {
-      "post": {
-        "summary": "Create menu",
-        "operationId": "createMenu",
-        "tags": [
-          "Menu"
-        ],
-        "parameters": [
-          {
-            "name": "Authorization",
-            "in": "header",
-            "required": true,
-            "description": "access token. Format: `{token}`",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CreateMenuRequestDto"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Menu created",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/CreateMenuResponseDto"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized (invalid token)"
-          }
-        }
-      }
-    },
-    "/api/menu/{menuId}": {
-      "get": {
-        "summary": "Get menu detail",
-        "operationId": "readMenu",
-        "tags": [
-          "Menu"
-        ],
-        "parameters": [
-          {
-            "name": "menuId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int64"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Menu detail",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ReadMenuResponseDto"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Menu not found"
-          }
-        }
-      }
-    },
-    "/api/menu/{menuId}/edit": {
-      "post": {
-        "summary": "Edit menu",
-        "operationId": "editMenu",
-        "tags": [
-          "Menu"
-        ],
-        "parameters": [
-          {
-            "name": "menuId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int64"
-            }
-          },
-          {
-            "name": "Authorization",
-            "in": "header",
-            "required": true,
-            "description": "access token. Format: `{token}`",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/EditMenuRequestDto"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Menu updated",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/EditMenuResponseDto"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized (invalid token)"
-          },
-          "404": {
-            "description": "Menu not found"
-          }
-        }
-      }
-    },
-    "/api/menu/{menuId}/delete": {
-      "post": {
-        "summary": "Delete menu",
-        "operationId": "deleteMenu",
-        "tags": [
-          "Menu"
-        ],
-        "parameters": [
-          {
-            "name": "menuId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int64"
-            }
-          },
-          {
-            "name": "Authorization",
-            "in": "header",
-            "required": true,
-            "description": "access token. Format: `{token}`",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Menu deleted"
-          },
-          "401": {
-            "description": "Unauthorized (invalid token)"
-          },
-          "404": {
-            "description": "Menu not found"
-          }
-        }
-      }
-    },
-    "/api/option": {
-      "post": {
-        "summary": "Create option",
-        "operationId": "createOption",
-        "tags": [
-          "Option"
-        ],
-        "parameters": [
-          {
-            "name": "Authorization",
-            "in": "header",
-            "required": true,
-            "description": "access token. Format: `{token}`",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CreateOptionRequestDto"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Option created",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/CreateOptionResponseDto"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized (invalid token)"
-          }
-        }
-      }
-    },
-    "/api/option/{optionId}": {
-      "get": {
-        "summary": "Get option detail",
-        "operationId": "readOption",
-        "tags": [
-          "Option"
-        ],
-        "parameters": [
-          {
-            "name": "optionId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int64"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Option detail",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ReadOptionResponseDto"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Option not found"
-          }
-        }
-      }
-    },
-    "/api/option/{optionId}/edit": {
-      "post": {
-        "summary": "Edit option",
-        "operationId": "editOption",
-        "tags": [
-          "Option"
-        ],
-        "parameters": [
-          {
-            "name": "optionId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int64"
-            }
-          },
-          {
-            "name": "Authorization",
-            "in": "header",
-            "required": true,
-            "description": "access token. Format: `{token}`",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/EditOptionRequestDto"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Option updated",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/EditOptionResponseDto"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized (invalid token)"
-          },
-          "404": {
-            "description": "Option not found"
-          }
-        }
-      }
-    },
-    "/api/option/{optionId}/delete": {
-      "post": {
-        "summary": "Delete option",
-        "operationId": "deleteOption",
-        "tags": [
-          "Option"
-        ],
-        "parameters": [
-          {
-            "name": "optionId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int64"
-            }
-          },
-          {
-            "name": "Authorization",
-            "in": "header",
-            "required": true,
-            "description": "access token. Format: `{token}`",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Option deleted"
-          },
-          "401": {
-            "description": "Unauthorized (invalid token)"
-          },
-          "404": {
-            "description": "Option not found"
-          }
-        }
-      }
-    },
-    "/api/platform": {
-      "get": {
-        "summary": "Find store by platform info",
+        "summary": "플랫폼 매핑으로 Store 찾기",
         "operationId": "readPlatform",
-        "tags": [
-          "Platform"
-        ],
         "parameters": [
           {
             "name": "pf_name",
@@ -712,8 +348,7 @@
             "required": true,
             "schema": {
               "type": "string"
-            },
-            "description": "Platform name (e.g. baemin, coupang)"
+            }
           },
           {
             "name": "pf_sid",
@@ -722,48 +357,34 @@
             "schema": {
               "type": "integer",
               "format": "int64"
-            },
-            "description": "Platform store id"
+            }
           }
         ],
         "responses": {
           "200": {
-            "description": "Found store id for given platform",
+            "description": "해당 플랫폼 매핑이 가리키는 Store ID",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ReadPlatformResponseDto"
+                  "$ref": "#/components/schemas/ReadPlatformResponse"
                 }
               }
             }
           },
           "404": {
-            "description": "Store not found for given platform",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
+            "description": "매핑 없음"
           }
         }
-      },
+      }
+    },
+
+    "/api/allergy/infer": {
       "post": {
-        "summary": "Link store with external platform",
-        "operationId": "createPlatform",
-        "tags": [
-          "Platform"
-        ],
-        "parameters": [
+        "summary": "메뉴/옵션에 대한 알레르기 유발 물질 추론",
+        "operationId": "inferAllergy",
+        "security": [
           {
-            "name": "Authorization",
-            "in": "header",
-            "required": true,
-            "description": "access token. Format: `{token}`",
-            "schema": {
-              "type": "string"
-            }
+            "BearerAuth": []
           }
         ],
         "requestBody": {
@@ -771,133 +392,169 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/CreatePlatformRequestDto"
+                "$ref": "#/components/schemas/InferAllergyRequest"
               }
             }
           }
         },
         "responses": {
           "200": {
-            "description": "Platform link created",
+            "description": "알레르기 코드 리스트 반환",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/CreatePlatformResponseDto"
+                  "$ref": "#/components/schemas/InferAllergyResponse"
                 }
               }
             }
           },
           "400": {
-            "description": "Invalid platform name"
+            "description": "type 값 오류 (menu / option 이외)"
           },
           "401": {
-            "description": "Unauthorized (invalid token)"
+            "description": "토큰 인증 실패"
+          },
+          "404": {
+            "description": "ChatGPT API 오류 등"
+          }
+        }
+      }
+    },
+
+    "/api/geo": {
+      "get": {
+        "summary": "도로명 주소로 좌표 조회 (Kakao API 래핑)",
+        "operationId": "getLocationByRoadAddress",
+        "parameters": [
+          {
+            "name": "road_address",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "좌표 정보",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetLocationResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "주소에 대한 좌표 없음"
+          }
+        }
+      }
+    },
+
+    "/api/recommend": {
+      "get": {
+        "summary": "추천 메뉴 조회",
+        "operationId": "getRecommends",
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "allergy_mask",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "추천 메뉴 리스트",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RecommendGetRecommendsResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "추천 결과 없음 또는 내부 오류"
+          }
+        }
+      }
+    },
+
+    "/api/recommend/order": {
+      "post": {
+        "summary": "주문 정보를 추천 시스템에 기록",
+        "operationId": "createOrderForRecommend",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RecommendCreateOrderRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "기록 성공 (No Content)"
+          },
+          "404": {
+            "description": "등록 실패"
+          }
+        }
+      }
+    },
+
+    "/api/recommend/user": {
+      "post": {
+        "summary": "추천 시스템 내 유저 생성",
+        "operationId": "createRecommendUser",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RecommendCreateUserRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "생성 성공 (No Content)"
+          },
+          "404": {
+            "description": "생성 실패"
           }
         }
       }
     }
   },
+
   "components": {
+    "securitySchemes": {
+      "BearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    },
     "schemas": {
-      "AllergyDto": {
-        "type": "object",
-        "properties": {
-          "allergy_code": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "allergy_description": {
-            "type": "string"
-          }
-        }
-      },
-      "CreateMenuRequestDto": {
-        "type": "object",
-        "properties": {
-          "store_id": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "menu_name": {
-            "type": "string"
-          },
-          "menu_price": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "menu_allergies": {
-            "type": "array",
-            "items": {
-              "type": "integer",
-              "format": "int64"
-            }
-          }
-        }
-      },
-      "CreateMenuResponseDto": {
-        "type": "object",
-        "properties": {
-          "store_id": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "menu_id": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "menu_name": {
-            "type": "string"
-          },
-          "menu_price": {
-            "type": "integer",
-            "format": "int64"
-          }
-        }
-      },
-      "CreateOptionRequestDto": {
-        "type": "object",
-        "properties": {
-          "menu_id": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "option_name": {
-            "type": "string"
-          },
-          "option_price": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "option_allergies": {
-            "type": "array",
-            "items": {
-              "type": "integer",
-              "format": "int64"
-            }
-          }
-        }
-      },
-      "CreateOptionResponseDto": {
-        "type": "object",
-        "properties": {
-          "menu_id": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "option_id": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "option_name": {
-            "type": "string"
-          },
-          "option_price": {
-            "type": "integer",
-            "format": "int64"
-          }
-        }
-      },
-      "CreateOwnerRequestDto": {
+      "LoginOwnerRequest": {
         "type": "object",
         "properties": {
           "email": {
@@ -906,82 +563,24 @@
           "password": {
             "type": "string"
           }
-        }
+        },
+        "required": ["email", "password"]
       },
-      "CreateOwnerResponseDto": {
+      "LoginOwnerResponse": {
         "type": "object",
         "properties": {
-          "owner_id": {
+          "id": {
             "type": "integer",
             "format": "int64"
           },
           "token": {
             "type": "string"
           }
-        }
+        },
+        "required": ["id", "token"]
       },
-      "CreatePlatformRequestDto": {
-        "type": "object",
-        "properties": {
-          "store_id": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "pf_name": {
-            "type": "string"
-          },
-          "pf_sid": {
-            "type": "integer",
-            "format": "int64"
-          }
-        }
-      },
-      "CreatePlatformResponseDto": {
-        "type": "object",
-        "properties": {
-          "store_id": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "pf_name": {
-            "type": "string"
-          },
-          "pf_sid": {
-            "type": "integer",
-            "format": "int64"
-          }
-        }
-      },
-      "CreateStoreRequestDto": {
-        "type": "object",
-        "properties": {
-          "store_name": {
-            "type": "string"
-          },
-          "store_road_address": {
-            "type": "string"
-          },
-          "store_postal_code": {
-            "type": "string"
-          },
-          "store_detail_address": {
-            "type": "string"
-          }
-        }
-      },
-      "CreateStoreResponseDto": {
-        "type": "object",
-        "properties": {
-          "store_id": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "store_name": {
-            "type": "string"
-          }
-        }
-      },
-      "LoginOwnerRequestDto": {
+
+      "CreateOwnerRequest": {
         "type": "object",
         "properties": {
           "email": {
@@ -990,250 +589,520 @@
           "password": {
             "type": "string"
           }
-        }
+        },
+        "required": ["email", "password"]
       },
-      "LoginOwnerResponseDto": {
+      "CreateOwnerResponse": {
         "type": "object",
         "properties": {
-          "owner_id": {
+          "id": {
             "type": "integer",
             "format": "int64"
           },
           "token": {
             "type": "string"
           }
-        }
+        },
+        "required": ["id", "token"]
       },
-      "MenuDto": {
+
+      "CreateStoreRequest": {
         "type": "object",
         "properties": {
-          "menu_id": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "menu_name": {
+          "name": {
             "type": "string"
           },
-          "menu_price": {
+          "type": {
             "type": "integer",
             "format": "int64"
           },
-          "menu_allergies": {
+          "road_address": {
+            "type": "string"
+          },
+          "postal_code": {
+            "type": "string"
+          },
+          "detail_address": {
+            "type": "string"
+          }
+        },
+        "required": ["name", "type", "road_address", "postal_code", "detail_address"]
+      },
+      "CreateStoreResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "name": {
+            "type": "string"
+          },
+          "type": {
+            "type": "integer",
+            "format": "int64"
+          }
+        },
+        "required": ["id", "name", "type"]
+      },
+
+      "Allergy": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "description": {
+            "type": "string"
+          }
+        },
+        "required": ["code", "description"]
+      },
+
+      "OptionItem": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "name": {
+            "type": "string"
+          },
+          "price": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "allergies": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/AllergyDto"
+              "$ref": "#/components/schemas/Allergy"
             }
+          }
+        },
+        "required": ["id", "name", "price"]
+      },
+
+      "OptionGroup": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
           },
-          "menu_options": {
+          "name": {
+            "type": "string"
+          },
+          "min_selected": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "max_selected": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "items": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/OptionDto"
+              "$ref": "#/components/schemas/OptionItem"
             }
           }
-        }
+        },
+        "required": ["id", "name", "min_selected", "max_selected"]
       },
-      "OptionDto": {
+
+      "Menu": {
         "type": "object",
         "properties": {
-          "option_id": {
+          "id": {
             "type": "integer",
             "format": "int64"
           },
-          "option_name": {
+          "name": {
             "type": "string"
           },
-          "option_price": {
+          "type": {
             "type": "integer",
             "format": "int64"
           },
-          "option_allergies": {
+          "price": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "allergies": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/AllergyDto"
+              "$ref": "#/components/schemas/Allergy"
+            }
+          },
+          "options": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/OptionGroup"
             }
           }
-        }
+        },
+        "required": ["id", "name", "type", "price"]
       },
-      "OwnerRequestDto": {
+
+      "Store": {
         "type": "object",
         "properties": {
-          "email": {
-            "type": "string"
-          },
-          "password": {
-            "type": "string"
-          }
-        }
-      },
-      "ReadPlatformResponseDto": {
-        "type": "object",
-        "properties": {
-          "store_id": {
-            "type": "integer",
-            "format": "int64"
-          }
-        }
-      },
-      "StoreDto": {
-        "type": "object",
-        "properties": {
-          "store_id": {
+          "id": {
             "type": "integer",
             "format": "int64"
           },
-          "store_name": {
+          "name": {
+            "type": "string"
+          },
+          "type": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "road_address": {
+            "type": "string"
+          },
+          "postal_code": {
+            "type": "string"
+          },
+          "detail_address": {
             "type": "string"
           },
           "menus": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/MenuDto"
+              "$ref": "#/components/schemas/Menu"
             }
           }
-        }
+        },
+        "required": ["id", "name", "type", "road_address", "postal_code", "detail_address"]
       },
-      "ReadStoreResponseDto": {
-        "allOf": [
-          {
-            "$ref": "#/components/schemas/StoreDto"
-          }
-        ]
-      },
-      "ReadMenuResponseDto": {
-        "allOf": [
-          {
-            "$ref": "#/components/schemas/MenuDto"
-          }
-        ]
-      },
-      "ReadOptionResponseDto": {
-        "allOf": [
-          {
-            "$ref": "#/components/schemas/OptionDto"
-          }
-        ]
-      },
-      "EditStoreRequestDto": {
-        "type": "object",
-        "properties": {
-          "store_name": {
-            "type": "string"
-          }
-        }
-      },
-      "EditStoreResponseDto": {
+
+      "CreateMenuRequest": {
         "type": "object",
         "properties": {
           "store_id": {
             "type": "integer",
             "format": "int64"
           },
-          "store_name": {
-            "type": "string"
-          }
-        }
-      },
-      "EditMenuRequestDto": {
-        "type": "object",
-        "properties": {
-          "menu_name": {
+          "name": {
             "type": "string"
           },
-          "menu_price": {
+          "type": {
             "type": "integer",
             "format": "int64"
           },
-          "menu_allergies": {
+          "price": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "allergies": {
             "type": "array",
             "items": {
               "type": "integer",
               "format": "int64"
+            },
+            "description": "알레르기 코드 (0~21) 리스트"
+          }
+        },
+        "required": ["store_id", "name", "type", "price"]
+      },
+
+      "CreateMenuResponse": {
+        "type": "object",
+        "properties": {
+          "store_id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "name": {
+            "type": "string"
+          },
+          "type": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "price": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "allergies": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Allergy"
             }
           }
-        }
+        },
+        "required": ["store_id", "id", "name", "type", "price"]
       },
-      "EditMenuResponseDto": {
+
+      "CreateOptionGroupRequest": {
         "type": "object",
         "properties": {
           "menu_id": {
             "type": "integer",
             "format": "int64"
           },
-          "menu_name": {
+          "name": {
+            "type": "string"
+          }
+        },
+        "required": ["menu_id", "name"]
+      },
+      "CreateOptionGroupResponse": {
+        "type": "object",
+        "properties": {
+          "menu_id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "name": {
             "type": "string"
           },
-          "menu_price": {
+          "min_selected": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "max_selected": {
             "type": "integer",
             "format": "int64"
           }
-        }
+        },
+        "required": ["menu_id", "id", "name", "min_selected", "max_selected"]
       },
-      "EditOptionRequestDto": {
+
+      "CreateOptionItemRequest": {
         "type": "object",
         "properties": {
-          "option_name": {
-            "type": "string"
-          },
-          "option_price": {
+          "group_id": {
             "type": "integer",
             "format": "int64"
           },
-          "option_allergies": {
+          "name": {
+            "type": "string"
+          },
+          "price": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "allergies": {
             "type": "array",
             "items": {
               "type": "integer",
               "format": "int64"
             }
           }
-        }
+        },
+        "required": ["group_id", "name", "price"]
       },
-      "EditOptionResponseDto": {
+
+      "CreateOptionItemResponse": {
         "type": "object",
         "properties": {
-          "option_id": {
+          "group_id": {
             "type": "integer",
             "format": "int64"
           },
-          "option_name": {
-            "type": "string"
-          },
-          "option_price": {
+          "id": {
             "type": "integer",
             "format": "int64"
-          }
-        }
-      },
-      "EditStoreAddressRequestDto": {
-        "type": "object",
-        "properties": {
-          "store_road_address": {
+          },
+          "name": {
             "type": "string"
           },
-          "store_postal_code": {
-            "type": "string"
+          "price": {
+            "type": "integer",
+            "format": "int64"
           },
-          "store_detail_address": {
-            "type": "string"
+          "allergies": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Allergy"
+            }
           }
-        }
+        },
+        "required": ["group_id", "id", "name", "price"]
       },
-      "EditStoreAddressResponseDto": {
+
+      "CreatePlatformRequest": {
         "type": "object",
         "properties": {
           "store_id": {
             "type": "integer",
             "format": "int64"
           },
-          "store_road_address": {
+          "pf_name": {
             "type": "string"
           },
-          "store_postal_code": {
+          "pf_sid": {
+            "type": "integer",
+            "format": "int64"
+          }
+        },
+        "required": ["store_id", "pf_name", "pf_sid"]
+      },
+
+      "CreatePlatformResponse": {
+        "type": "object",
+        "properties": {
+          "store_id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "pf_name": {
             "type": "string"
           },
-          "store_detail_address": {
+          "pf_sid": {
+            "type": "integer",
+            "format": "int64"
+          }
+        },
+        "required": ["store_id", "pf_name", "pf_sid"]
+      },
+
+      "ReadPlatformResponse": {
+        "type": "object",
+        "properties": {
+          "store_id": {
+            "type": "integer",
+            "format": "int64"
+          }
+        },
+        "required": ["store_id"]
+      },
+
+      "InferAllergyRequest": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "description": "menu 또는 option"
+          },
+          "menu_name": {
+            "type": "string"
+          },
+          "optin_group_name": {
+            "type": "string",
+            "description": "옵션 그룹명 (코드 상 JSON 키 오타 포함되어 있음)"
+          },
+          "option_item_name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string",
+            "description": "추가 설명"
+          }
+        },
+        "required": ["type", "menu_name"]
+      },
+
+      "InferAllergyResponse": {
+        "type": "object",
+        "properties": {
+          "allergies": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "int64"
+            },
+            "description": "알레르기 코드 리스트"
+          }
+        },
+        "required": ["allergies"]
+      },
+
+      "GetLocationResponse": {
+        "type": "object",
+        "properties": {
+          "latitude": {
+            "type": "number",
+            "format": "double"
+          },
+          "longitude": {
+            "type": "number",
+            "format": "double"
+          }
+        },
+        "required": ["latitude", "longitude"]
+      },
+
+      "RecommendCreateUserRequest": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "latitude": {
+            "type": "number",
+            "format": "double"
+          },
+          "longitude": {
+            "type": "number",
+            "format": "double"
+          }
+        },
+        "required": ["id", "latitude", "longitude"]
+      },
+
+      "RecommendCreateOrderRequest": {
+        "type": "object",
+        "properties": {
+          "user_id": {
+            "type": "string"
+          },
+          "menu_id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "quantity": {
+            "type": "integer",
+            "format": "int64"
+          }
+        },
+        "required": ["user_id", "menu_id", "quantity"]
+      },
+
+      "RecommendItem": {
+        "type": "object",
+        "properties": {
+          "store_id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "store_name": {
+            "type": "string"
+          },
+          "menu_id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "menu_name": {
             "type": "string"
           }
-        }
+        },
+        "required": ["store_id", "store_name", "menu_id", "menu_name"]
+      },
+
+      "RecommendGetRecommendsResponse": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/RecommendItem"
+            }
+          }
+        },
+        "required": ["items"]
       }
     }
   }
